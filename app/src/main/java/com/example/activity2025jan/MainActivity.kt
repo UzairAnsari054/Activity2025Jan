@@ -2,12 +2,20 @@ package com.example.activity2025jan
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+
+    // #1 Define View
+    private lateinit var name_tv: TextView
+    private lateinit var count_tv: TextView
+    private lateinit var bool_tv: TextView
+    private lateinit var btn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +31,40 @@ class MainActivity : AppCompatActivity() {
                 "2. Set up necessary data, e.g., retrieve data from a database or API, or prepare ViewModel.\n" +
                 "3. Set up listeners (e.g., button click listeners, RecyclerView adapters).\n" +
                 "4. Restore any saved state using savedInstanceState if needed.")
+
+        // #2 Initialize View
+        name_tv = findViewById(R.id.name_tv)
+        count_tv = findViewById(R.id.count_tv)
+        bool_tv = findViewById(R.id.bool_tv)
+        btn = findViewById(R.id.btn)
+
+        // #5 before recreating, check savedInstanceState!=null & assign updated data
+        if (savedInstanceState!=null){
+            name = savedInstanceState.getString("key1").toString()
+            count = savedInstanceState.getInt("key2")
+            bool = savedInstanceState.getBoolean("key3")
+
+            name_tv.text = name
+            count_tv.text = count.toString()
+            bool_tv.text = bool.toString()
+        }
+    }
+
+    private var name = "Uzair"
+    private var count = 1
+    private var bool = true
+
+    // #4 Save updated data while configuration changes
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d("MainActivityApp", "onSaveInstanceState")
+        Log.d("MainActivityApp", "1. Save small, UI-related data in the Bundle passed to onSaveInstanceState.\n" +
+                "2. Only save data that you need to restore after a configuration change or process death.\n" +
+                "3. Avoid saving large objects like large bitmaps or complex objects; use persistent storage (e.g., SharedPreferences or a database) for those.")
+
+        outState.putString("key1", name)
+        outState.putInt("key2", count)
+        outState.putBoolean("key3", bool)
     }
 
     override fun onStart() {
@@ -41,6 +83,17 @@ class MainActivity : AppCompatActivity() {
                 "2. Register any broadcast receivers or listeners (e.g., location updates, sensor events).\n" +
                 "3. Resume any paused processes (e.g., a paused video or sound).")
 
+        // #3 Data changes
+        btn.setOnClickListener {
+            name = "Uzair Ansari"
+            name_tv.text = name
+
+            count++
+            count_tv.text = count.toString()
+
+            bool = false
+            bool_tv.text = bool.toString()
+        }
     }
 
     override fun onPause() {
