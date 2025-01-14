@@ -1,13 +1,19 @@
 package com.example.activity2025jan
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var tv: TextView
+    private lateinit var btn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +29,9 @@ class MainActivity : AppCompatActivity() {
                 "2. Set up necessary data, e.g., retrieve data from a database or API, or prepare ViewModel.\n" +
                 "3. Set up listeners (e.g., button click listeners, RecyclerView adapters).\n" +
                 "4. Restore any saved state using savedInstanceState if needed.")
+
+        tv = findViewById(R.id.tv)
+        btn = findViewById(R.id.btn)
     }
 
     override fun onStart() {
@@ -41,6 +50,21 @@ class MainActivity : AppCompatActivity() {
                 "2. Register any broadcast receivers or listeners (e.g., location updates, sensor events).\n" +
                 "3. Resume any paused processes (e.g., a paused video or sound).")
 
+        btn.setOnClickListener {
+            val intent = Intent(this, SecondActivity::class.java)
+            startActivityForResult(intent, 111)
+        }
+
+    }
+
+    @Deprecated("This method has been deprecated in favor of using the Activity Result API\n      which brings increased type safety via an {@link ActivityResultContract} and the prebuilt\n      contracts for common intents available in\n      {@link androidx.activity.result.contract.ActivityResultContracts}, provides hooks for\n      testing, and allow receiving results in separate, testable classes independent from your\n      activity. Use\n      {@link #registerForActivityResult(ActivityResultContract, ActivityResultCallback)}\n      with the appropriate {@link ActivityResultContract} and handling the result in the\n      {@link ActivityResultCallback#onActivityResult(Object) callback}.")
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 111 && resultCode == 786){
+            val result = data?.getStringExtra("key")
+            tv.text = result
+        }
     }
 
     override fun onPause() {
