@@ -1,13 +1,19 @@
 package com.example.activity2025jan
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var next_btn: Button
+    private lateinit var implicit_btn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +29,9 @@ class MainActivity : AppCompatActivity() {
                 "2. Set up necessary data, e.g., retrieve data from a database or API, or prepare ViewModel.\n" +
                 "3. Set up listeners (e.g., button click listeners, RecyclerView adapters).\n" +
                 "4. Restore any saved state using savedInstanceState if needed.")
+
+        next_btn = findViewById(R.id.next_btn)
+        implicit_btn = findViewById(R.id.implicit_intent_btn)
     }
 
     override fun onStart() {
@@ -36,11 +45,22 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("MainActivityApp", "onResume-3")
+        Log.d("MainActivityAp p", "onResume-3")
         Log.d("MainActivityApp", "1. Start any resources that need to be active for user interaction (e.g., starting sensors, listening for changes).\n" +
                 "2. Register any broadcast receivers or listeners (e.g., location updates, sensor events).\n" +
                 "3. Resume any paused processes (e.g., a paused video or sound).")
 
+        next_btn.setOnClickListener {
+            val intent = Intent(this, SecondActivity::class.java)
+            intent.putExtra("key", "Uzair")
+            startActivity(intent)
+        }
+
+        implicit_btn.setOnClickListener {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.setData(Uri.parse("https://www.google.co.in/"))
+            startActivity(intent)
+        }
     }
 
     override fun onPause() {
